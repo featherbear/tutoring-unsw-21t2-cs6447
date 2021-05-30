@@ -1,0 +1,31 @@
+
+<script type="text/javascript">
+  document.title += " | {{ .Site.Title }}";
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']]
+    },
+    svg: {
+      fontCache: 'global'
+    }
+  };
+</script>
+  
+<script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+
+<script>
+if (window.location.search.match(/\?print-pdf/gi)) {
+  function insertCSS(src) {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = src;
+    document.getElementsByTagName('head')[0].appendChild( link );  
+  }
+
+  insertCSS('{{ "/reveal-js/css/print/pdf.css" | relURL }}');
+  insertCSS('{{ "/hideHomeButton.css" | relURL }}');
+}
+</script>
+
+<a id="homeButton" style="position: fixed; bottom: 8px; left: 8px; z-index: 31; font-family: Helvetica, sans-serif; font-size: 12px; line-height: 1;color: #fff; background-color: rgba(0, 0, 0, 0.4); padding: 5px; text-decoration: none;" href='{{"/" | relURL }}'>Home</a>
