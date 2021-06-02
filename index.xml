@@ -1,1 +1,8 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>COMP6447 Tutorial Slides</title><link>/</link><description>Recent content on COMP6447 Tutorial Slides</description><generator>Hugo -- gohugo.io</generator><language>en-au</language><atom:link href="/index.xml" rel="self" type="application/rss+xml"/></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>COMP6447 Tutorial Slides</title><link>/</link><description>Recent content on COMP6447 Tutorial Slides</description><generator>Hugo -- gohugo.io</generator><language>en-au</language><lastBuildDate>Mon, 31 May 2021 23:56:30 +1000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml"/><item><title>Week 1</title><link>/week1/</link><pubDate>Mon, 31 May 2021 23:56:30 +1000</pubDate><guid>/week1/</guid><description>Week 1 Who, me? andrew.j.wong@unsw.edu.au
+Teams ^ SECedu Slack - featherbear New number, who dis? Share something interesting on your phone&amp;rsquo;s photo gallery (or meme collection) that describes yourself
+Any society plugs hint hint
+Housekeeping 🍉 Food - Sure thing
+🎥 Recordings - Yes, next slide
+👩‍🏫 Lab Attendance - Not marked
+💡 This room has RGB lighting
+document.getElementById("rgb").innerHTML = document.getElementById("rgb").innerText.trim().split("").map(s = `${s}`).</description></item></channel></rss>
