@@ -105,15 +105,11 @@ What assembly would I write to call this function?
 
 Shellcode is a sequence of assembly instructions that carry out a task. If we can make the instruction pointer (`EIP`) point to our shellcode, we have code execution!
 
-{{% fragment %}}
 * Functions are just assembly
 * Assembly are just bytes
 * We can send bytes :)
-{{% /fragment %}}
 
-{{% fragment %}}
 Generally we want to pop a _shell_
-{{% /fragment %}}
 
 ---
 
@@ -130,7 +126,7 @@ Generally we want to pop a _shell_
 {{% section %}}
 Sometimes we do not have enough space in an execute-vulnerable buffer to inject our payload.
 
-Instead, we put our payload (the 🥚) somewhere else, and write an 'egg hunter' - assembly instructions that finds and execute the 🥚.
+Instead, we put our payload (the egg) somewhere else, and write an 'egg hunter' - assembly instructions that finds and execute the egg.
 
 ---
 
