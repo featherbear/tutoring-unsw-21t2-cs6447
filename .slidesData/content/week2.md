@@ -43,17 +43,6 @@ date: 2021-06-06T22:58:39+10:00
 
 > [joinmyquiz.com](http://joinmyquiz.com)
 
-<!-- How did Wargames 1 go?
-
-* hahaha(rd) segfault go brrr
-* I found it alright
-* Too easy -->
-
-<!-- Any questions? -->
-<!-- If you don't, just enter something and press next -->
-
-
-
 ---
 
 {{< slide content="secedu.goodfaith" >}}
