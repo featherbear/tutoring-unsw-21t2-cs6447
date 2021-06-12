@@ -28,4 +28,18 @@ if (window.location.search.match(/\?print-pdf/gi)) {
 }
 </script>
 
+<script>
+(function(f, a, t, h, o, m){
+  a[h]=a[h]||function(){
+    (a[h].q=a[h].q||[]).push(arguments)
+  };
+  o=f.createElement('script'),
+  m=f.getElementsByTagName('script')[0];
+  o.async=1; o.src=t; o.id='fathom-script';
+  m.parentNode.insertBefore(o,m)
+})(document, window, '//ss.featherbear.cc/tracker.js', 'fathom');
+fathom('set', 'siteId', 'VQPYQ');
+fathom('trackPageview');
+</script>
+
 <a id="homeButton" style="position: fixed; bottom: 8px; left: 8px; z-index: 31; font-family: Helvetica, sans-serif; font-size: 12px; line-height: 1;color: #fff; background-color: rgba(0, 0, 0, 0.4); padding: 5px; text-decoration: none;" href='{{"/" | relURL }}'>Home</a>
