@@ -175,7 +175,7 @@ $> c string 50
 What if you don't provide any arguments?  
 
 ```c
-printf("%d %d %d %d %s)
+printf("%d %d %d %d %s")
 ```
 
 * Responsibility of the caller to push the relevant data
