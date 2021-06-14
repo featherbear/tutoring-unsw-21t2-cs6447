@@ -12,3 +12,7 @@ draft: true
 
 ---
 
+{{< slide content="secedu.goodfaith" >}}
+
+---
+
