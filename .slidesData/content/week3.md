@@ -20,7 +20,8 @@ date: 2021-06-13T19:44:40+10:00
 ## cdecl, again
 
 ```c
-mycoolfunc(arg1, arg2, arg3);  | 0xFF
+mycoolfunc(arg1, arg2, arg3);
+                               | 0xFF
 push arg3                      |      arg3
 push arg2                      |      arg2
 push arg1                      |      arg1
