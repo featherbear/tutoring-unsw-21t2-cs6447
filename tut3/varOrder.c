@@ -1,4 +1,3 @@
-// gcc -o varOrder -m32 -g varOrder.c
 #include <stdio.h>
 
 #pragma GCC diagnostic ignored "-Wformat-security"

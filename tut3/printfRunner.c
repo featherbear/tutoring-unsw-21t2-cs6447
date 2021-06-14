@@ -1,8 +1,6 @@
-// gcc -z norelro -z execstack  -fno-stack-protector -no-pie -m32 -g printfRunner.c -o printfRunner
 #include <stdio.h>
 
 #pragma GCC diagnostic ignored "-Wformat-security"
-
 
 void fn() {
     puts("Enter a format string!");

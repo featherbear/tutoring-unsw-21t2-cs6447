@@ -1,5 +1,3 @@
-// gcc -z norelro -z execstack  -fno-stack-protector -no-pie -m32 -g
-
 #include <stdio.h>
 
 #pragma GCC diagnostic ignored "-Wformat-security"
