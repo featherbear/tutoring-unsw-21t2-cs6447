@@ -48,6 +48,12 @@ find-me		36	45%
 
 ---
 
+#### e.g RE
+
+{{% code file="/static/week4/re-feedback/returns.c" language="c" %}}
+
+---
+
 {{< slide class="center" >}}
 
 #### Walkthrough
