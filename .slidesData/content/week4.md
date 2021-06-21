@@ -411,6 +411,20 @@ for (int i = 0; i <= 10; i++) {         // This will loop 11 times!
 
 ---
 
+### Midsem Exam
+
+Friday 2nd July
+
+* 1x Buffer Overflow
+* 1x Format String
+* 1x something else (sorry in advanced)
+
+2 hour exam, open from 10am - 6pm
+
+Practice!
+
+---
+
 {{< slide class="center" >}}
 
 ## Any questions?
