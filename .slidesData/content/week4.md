@@ -425,6 +425,18 @@ Practice!
 
 ---
 
+### Know Your Tools
+
+* Resource Page: [https://featherbear.cc/tutoring-unsw/](featherbear.cc/tutoring-unsw/)
+* pwntools
+  * Templates
+  * p32 / pause / attach / fit / ELF.got / ELF.symbols
+  * `DEBUG`
+* gdb / pwndgb
+  * got, stack, vmmap, break, next, finish, continue
+
+---
+
 {{< slide class="center" >}}
 
 ## Any questions?
