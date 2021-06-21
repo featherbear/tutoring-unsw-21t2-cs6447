@@ -1,0 +1,140 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><title>Week 4</title><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="black-translucent"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><link rel=stylesheet href=../reveal-js/css/reset.css><link rel=stylesheet href=../reveal-js/css/reveal.css><link rel=stylesheet href=../reveal-js/css/theme/black.css id=theme><link rel=stylesheet href=../highlight-js/default.min.css></head><body><div class=reveal><div class=slides><section data-noprocess data-shortcode-slide class=center><h2 id=week-4>Week 4</h2></section><section data-noprocess data-shortcode-slide><h2 id=good-faith-policy>Good Faith Policy</h2><blockquote><p>&ldquo;These courses expects a high standard of professionalism from its students with regard to how security testing is conducted. We expect all students to act in good faith at all times [&mldr;]&rdquo;</p></blockquote><p>TL;DR Don&rsquo;t be mean</p><p><a href=https://sec.edu.au/good-faith-policy>https://sec.edu.au/good-faith-policy</a></p></section><section><section data-shortcode-section><h3 id=wargames-2-review>Wargames 2 Review</h3><pre><code>Overall Submissions: 57 / 74
+
+2-stack-dump  24	32%
+2-simple      54	73%
+2-shellz      44	59%
+2-find-me     36	49%
+</code></pre><h3 id=wargames-3-review>Wargames 3 Review</h3><pre><code>Overall Submissions: 49 / 74
+
+3-meme       47 	64%
+3-formatrix  44 	59%
+3-tetris     35 	47%
+3-elonmusk   26 	35%
+</code></pre><p>As of 2AM 22/06/2021</p></section><section><h4 id=re-re>RE: RE</h4><ul><li>Simplify your code!<ul><li><code>i += 1</code><ul><li><code>i++</code></li></ul></li><li><code>i & 1 == 0</code><ul><li><code>i % 2</code></li></ul></li></ul></li><li>Check your return values<ul><li>return</li><li>or&mldr; return 0;</li><li>or&mldr; return 1;</li></ul></li></ul></section><section><h4 id=eg-re>e.g RE</h4><pre><code class=language-c>int main(int argc, char** argv) {
+  return;
+}
+
+int int_return() {
+  return;
+}
+
+int int_return0() {
+  return 0;
+}
+
+int int_return1() {
+  return 1;
+}
+
+void void_return() {
+  return;
+}
+
+</code></pre></section><section><h4 id=re-re-1>RE: RE</h4><ul><li>Compile the code and check for similarities and differences<ul><li>Probs turn off security protections and optimisations</li></ul></li><li>Tooling scripts, format specifier!<ul><li>```<code>python3</code></li><li><code>blah</code></li><li>```</li></ul></li></ul></section><section data-noprocess data-shortcode-slide class=center><h4 id=walkthrough>Walkthrough</h4><blockquote><p>./stack-dump</p></blockquote></section><section><h4 id=walkthrough-1>Walkthrough</h4><blockquote><p>./stack-dump</p></blockquote><p> </p><p> </p><p> </p><h5 id=tips>Tips</h5><ul><li><code>fit() / flat()</code></li><li><code>elf.symbols[funcName]</code></li></ul></section></section><section data-noprocess data-shortcode-slide class=center><h1 id=week-4-1>Week 4</h1><h2 id=source-auditing>Source Auditing</h2></section><section><pre><code class=language-c>int flags = 1;
+if (flags &amp; FLAG ) {
+    printf(&quot;TRUE\n&quot;);
+} else {
+    printf(&quot;FALSE\n&quot;);
+}
+</code></pre><span class=fragment><pre><code class=language-c>int flags = 1;
+if (flags &amp; FLAG != 0) {     //
+    printf(&quot;TRUE\n&quot;);        // What could possibly go wrong?
+} else {                     // works on my machine TM
+    printf(&quot;FALSE\n&quot;);       //
+}
+</code></pre></span><span class=fragment><pre><code class=language-c>if (flags &amp; (FLAG != 0)) {
+    printf(&quot;TRUE\n&quot;);
+} else {
+    printf(&quot;FALSE\n&quot;);
+}
+</code></pre><blockquote><p>Operation Precedence</p></blockquote></span></section><section><h2 id=operation-precedence>Operation Precedence</h2><pre><code class=language-c>flags = flags + 1 % 2;
+
+printf(&quot;Flags: %d\n&quot;,flags);
+</code></pre><ul><li>A. <code>(flags + 1) % 2;</code></li><li>B. <code>flags + (1 % 2);</code></li><li>C. None of the above</li><li>D. All of the belo-<em>wait what</em></li></ul><span class=fragment><blockquote><p>~ it be B 🐝</p></blockquote><p>B for <s>bee</s> <s>buzzz</s> <s>bug</s> brrrrrrrrrr</p></span></section><section><h3 id=some-real-world-sbugs-brrrr>Some Real World <s>Bug</s> brrrr</h3><section data-shortcode-section><style>code{font-size:.7em}</style><pre><code class=language-c>char pt[] = &quot;THISISSOMEDATAOFSOMESORT&quot;;
+char env_script_name[] = &quot;USER_CONTROLLED_ENV1&quot;;
+char env_path_info[] =  &quot;USER_CONTROLLED_ENV2&quot;;
+
+int ptlen = strlen(pt) - strlen(env_script_name);
+int path_translated_len = ptlen + env_path_info ? strlen(env_path_info) : 0;
+char *path_translated = NULL;
+path_translated = (char *) malloc(path_translated_len + 1);
+memcpy(path_translated, pt, ptlen);
+if (env_path_info) {
+    memcpy(path_translated + ptlen, env_path_info, path_translated_len - ptlen);
+}
+</code></pre><blockquote><p>What&rsquo;s wrong with this code?</p></blockquote></section><section><pre><code class=language-c>int path_translated_len = ptlen + (env_path_info ? strlen(env_path_info) : 0);
+</code></pre><h6 id=how-it-started>How it started</h6><pre><code class=language-c>if (env_path_info) {
+    path_translated_len = ptlen + strlen(env_path_info);
+} else {
+    path_translated_len = ptlen;
+}
+</code></pre><h6 id=how-its-going>How it&rsquo;s going</h6><pre><code class=language-c>if (ptlen + env_path_info) {                            // bit of a rip.
+    path_translated_len = strlen(env_path_info);
+} else {
+    path_translated_len = 0;
+}
+</code></pre></section><section><h6 id=so-what>SO WHAT?</h6><pre><code class=language-c>int path_translated_len = (ptlen + env_path_info) ? strlen(env_path_info) : 0;
+...
+if (env_path_info) {
+    memcpy(path_translated + ptlen, env_path_info, path_translated_len - ptlen);
+}
+</code></pre><ul><li>if <code>ptlen = -env_path_info</code><ul><li>then <code>path_translated_len = 0</code></li></ul></li><li><code>path_translated_len - ptlen</code><ul><li>&mldr;</li><li><code>0 - ptlen</code></li><li><code>-ptlen</code> &mldr; negative param in <code>memcpy</code>?</li></ul></li></ul></section><section><h6 id=valve-pls-fix->valve pls fix 👉🥺👈</h6><p> </p><pre><code class=language-c>int path_translated_len = ptlen + (env_path_info ? strlen(env_path_info) : 0);
+</code></pre><p> </p><pre><code>                            ____________________________
+                            &lt; Brackets people, brackets! &gt;
+                            ----------------------------
+                                    \   ^__^
+                                    \  (oo)\_______
+                                        (__)\       )\/\
+                                        :p ||----w |
+                                            ||     ||
+</code></pre></section></section><section><h2 id=dangling-braces>Dangling Braces</h2><pre><code class=language-c>if (x == 0) {
+    if (y == 0) error();
+else {
+    z = x + y;
+    fclose(&amp;z);
+}
+</code></pre><span class=fragment><pre><code class=language-c>if (x == 0){
+    if (y == 0)
+        error();
+    else {
+        z = x + y;
+        fclose(&amp;z);
+    }
+}
+</code></pre></span></section><section><h2 id=order-of-operations>Order of Operations</h2><pre><code class=language-c>i = 0
+while (i &lt; n) {
+    y[i] = x[i++];
+}
+</code></pre><p>What will happen here?</p><span class=fragment><h1 id=heading>🤷</h1><p>The compiler decides</p></span></section><section><span class=fragment><h2 id=integer-overflow>Integer Overflow</h2></span><pre><code class=language-c>u_int strLen = strlen(userinput);
+int buffsize = strLen + 11;
+
+char *mem = malloc(buffsize);
+strncpy(mem, &quot;this/path/&quot;, 10);
+strncpy(mem[10], userinput, strLen);
+</code></pre><p>What can go wrong?</p><span class=fragment><p>1 2 3 4 5 6 7 8 9 0 anddd iiii oooop!</p></span></section><section><h2 id=format-strings>Format Strings</h2><pre><code>char *var;
+printf(var);
+fprintf(stderr, var);
+vsnprintf(var2, strlen(var2), var);
+</code></pre><p>(Week 3 content)</p></section><section><h2 id=heap>Heap</h2><h5 id=use-after-free>Use after free</h5><pre><code class=language-c>char *var = malloc(10);
+free(var);
+printf(&quot;%s\n&quot;, var);          // !!!!!
+</code></pre><h5 id=double-free>Double Free</h5><pre><code class=language-c>char *var = malloc(10);
+free(var);                    // !!!!!
+char *var2 = malloc(10);
+free(var2);
+free(var);                    // !!!!!
+</code></pre><p>More on these later on!</p></section><section><h2 id=null-mapping>NULL Mapping</h2><pre><code class=language-c>char *a;
+vuln_syscall_sets_a_NULL(a);
+char b[] = &quot;string&quot;;
+strcpy(a, b);                 // strcpy(NULL, b);
+</code></pre><p>Usually we would get a segfault&mldr;<br>But what if we did a memory map (<code>mmap</code>)?</p><p> </p><p> </p><pre><code class=language-c>mem = mmap(NULL, 0x1000, PROT READ | PROT WRITE | PROT EXEC, MAP FIXED | MAP ANONYMOUS | MAP PRIVATE, 0, 0);
+</code></pre><p>privilege escalation maybe?</p></section><section><h2 id=oboe>OBOE</h2><pre><code class=language-c>char *var = malloc(10);
+if (var == NULL) return;
+
+for (int i = 0; i &lt;= 10; i++) {         // This will loop 11 times!
+    var[i] = argv[2][i];
+}
+</code></pre></section><section><h3 id=tldr>TL;DR</h3><p><img src=2021-06-22-03-40-41.png alt></p></section><section data-noprocess data-shortcode-slide class=center><h2 id=any-questions>Any questions?</h2><ul><li>Anything else?</li></ul><p> </p><p> </p><h2 id=activities>Activities</h2><ul><li>Find some bugs in the lab exercise</li><li>Do your wargames</li></ul></section></div></div><script type=text/javascript src=../reveal-hugo/object-assign.js></script><a href=../reveal-js/css/print/ id=print-location style=display:none></a><script type=text/javascript>var printLocationElement=document.getElementById('print-location');var link=document.createElement('link');link.rel='stylesheet';link.type='text/css';link.href=printLocationElement.href+(window.location.search.match(/print-pdf/gi)?'pdf.css':'paper.css');document.getElementsByTagName('head')[0].appendChild(link);</script><script type=application/json id=reveal-hugo-site-params>{"center":false,"history":true,"pdf_separate_fragments":false,"slide_number":true}</script><script type=application/json id=reveal-hugo-page-params>null</script><script src=../reveal-js/js/reveal.js></script><script type=text/javascript>function camelize(map){if(map){Object.keys(map).forEach(function(k){newK=k.replace(/(\_\w)/g,function(m){return m[1].toUpperCase()});if(newK!=k){map[newK]=map[k];delete map[k];}});}
+return map;}
+var revealHugoDefaults={center:true,controls:true,history:true,progress:true,transition:"slide"};var revealHugoSiteParams=JSON.parse(document.getElementById('reveal-hugo-site-params').innerHTML);var revealHugoPageParams=JSON.parse(document.getElementById('reveal-hugo-page-params').innerHTML);var options=Object.assign({},camelize(revealHugoDefaults),camelize(revealHugoSiteParams),camelize(revealHugoPageParams));Reveal.initialize(options);</script><script type=text/javascript src=../reveal-js/plugin/markdown/marked.js></script><script type=text/javascript src=../reveal-js/plugin/markdown/markdown.js></script><script type=text/javascript src=../reveal-js/plugin/highlight/highlight.js></script><script type=text/javascript src=../reveal-js/plugin/zoom-js/zoom.js></script><script type=text/javascript src=../reveal-js/plugin/notes/notes.js></script><script type=text/javascript>document.title+=" | COMP6447 Tutorial Slides";window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']]},svg:{fontCache:'global'}};</script><script type=text/javascript id=MathJax-script async src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js></script><script>if(window.location.search.match(/\?print-pdf/gi)){function insertCSS(src){const link=document.createElement('link');link.rel='stylesheet';link.type='text/css';link.href=src;document.getElementsByTagName('head')[0].appendChild(link);}
+insertCSS('\/reveal-js\/css\/print\/pdf.css');insertCSS('\/hideHomeButton.css');}</script><script>(function(f,a,t,h,o,m){a[h]=a[h]||function(){(a[h].q=a[h].q||[]).push(arguments)};o=f.createElement('script'),m=f.getElementsByTagName('script')[0];o.async=1;o.src=t;o.id='fathom-script';m.parentNode.insertBefore(o,m)})(document,window,'//ss.featherbear.cc/tracker.js','fathom');fathom('set','siteId','VQPYQ');fathom('trackPageview');</script><a id=homeButton style=position:fixed;bottom:8px;left:8px;z-index:31;font-family:Helvetica,sans-serif;font-size:12px;line-height:1;color:#fff;background-color:rgba(0,0,0,.4);padding:5px;text-decoration:none href=../>Home</a></body></html>
