@@ -1,5 +1,5 @@
 ---
-title: "Week 1"
+title: "Week 1 - Buffer Overflows"
 layout: "bundle"
 outputs: ["Reveal"]
 date: 2021-05-31T23:56:30+10:00
@@ -8,6 +8,8 @@ date: 2021-05-31T23:56:30+10:00
 {{< slide class="center" >}}
 
 ## Week 1
+
+##### Buffer Overflows
 
 ---
 
