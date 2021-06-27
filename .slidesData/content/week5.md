@@ -27,6 +27,22 @@ Return Oriented Programming
 
 ---
 
+### Fuzzer Assignment
+
+[WebCMS] -> [Course Work] -> [[Major Project](https://webcms3.cse.unsw.edu.au/COMP6447/21T2/resources/59788)][&nbsp;](https://featherbear.cc/UNSW-COMP6447-ass/)
+
+> Key Dates
+
+* Mid-point Submission - End of Week 7
+* Final Submission - End of Week 10
+
+> Project Groups
+
+* Submit groups on the form
+* And also tell me / message me
+
+---
+
 ## ROP
 
 {{% section %}}
@@ -248,12 +264,15 @@ Don't forget about ASLR / PIE
 
 ---
 
-### Midsem Exam
+### Dates
 
-> Friday 2nd July (This week)
+* Friday 2nd July (this week) - Midsem
+* Monday, Week 7 - Wargames 5 Due
+* End of Week 7 - Mid-point Fuzzer Due
+* End of week 10 - Final Fuzzer Due
 
-3 questions, 2 hours
+&nbsp;  
 
-> 10am - 6pm
+### Activities
 
----
+roproproproproproproprop
