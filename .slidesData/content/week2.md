@@ -1,5 +1,5 @@
 ---
-title: "Week 2"
+title: "Week 2 - Shellcode"
 layout: "bundle"
 outputs: ["Reveal"]
 date: 2021-06-06T22:58:39+10:00
