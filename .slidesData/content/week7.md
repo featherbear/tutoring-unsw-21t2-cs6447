@@ -1,5 +1,5 @@
 ---
-title: "Week 7 - Heap"
+title: "Week 7 - Heap Exploitation"
 layout: "bundle"
 outputs: ["Reveal"]
 date: 2021-07-11T18:48:56+10:00
@@ -10,7 +10,7 @@ draft: true
 
 ## Week 7
 
-Heap
+Heap Exploitation
 
 ---
 
@@ -35,7 +35,7 @@ Heap
 * Vulnerable memory write functions that 
   * Allow arbitrary input lengths
   * Allow longer than allocated lengths
-* Allows control of variables, stack frame, other exploits
+* Allows control of variables, stack frame, etc...
 * Not always `gets` / `fgets`
   * `strcpy`
 * Mitigation: Stack canaries
@@ -49,11 +49,11 @@ Heap
 * Program is tricked into running arbitrary instructions supplied by the user
 * Pop a shell?
 * Mitigation
-  * NX bit
-    * Defeat: ROP
-    * Disable NX
+    * NX bit
+        * Defeat: ROP
+        * Disable NX
   * Small buffer
-    * Defeat: Egg Hunters
+        * Defeat: Egg Hunters
 
 ---
 
@@ -89,9 +89,27 @@ Leak!
 
 #### Attacking the GOT
 
-* If no RELRO: Easy
-* If partial RELRO: Overwrite an uninitialised entry
-* If full RELRO: :( ... overwrite a hook?
+* If <span data-rgb="g">no RELRO</span> - trivial
+* If <span data-rgb="y">partial RELRO</span> - overwrite an uninitialised entry
+* If <span data-rgb="r">full RELRO</span> - ... overwrite a hook?
+
+<!--
+* r - #e41a5c
+* y - #e5c06e
+* g - green
+-->
+
+<link rel="stylesheet" type="text/css" href="moreRGB.css" />
+
+<script>
+{
+    for (let elem of document.querySelectorAll('[data-rgb]')) {
+        let type = elem.dataset['rgb'].toUpperCase()
+        elem.innerHTML = elem.innerText.trim().split("").map(s => `<span>${s}</span>`).join("")
+        elem.classList.add(`anim-text-flow${type}`)
+    }
+}
+</script>
 
 ---
 
