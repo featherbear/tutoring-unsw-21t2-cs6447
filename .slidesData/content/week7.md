@@ -317,8 +317,9 @@ puts(chunk.next) /////// chunk
 
 ### Dates
 
+* Today, Tuesday, Week 7 @ 5.59pm - Wargames 5 Due
 * This Sunday 18/07 @ 5.59pm - Mid-point Fuzzer Due
-* Monday, Week 8 - Wargames 6 Due
+<!-- * Monday, Week 9 - Wargames 6 Due -->
 
 &nbsp;  
 
