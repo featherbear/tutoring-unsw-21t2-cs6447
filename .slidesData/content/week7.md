@@ -124,7 +124,6 @@ Leak!
 
 ---
 
-
 ## Heap
 
 ##### Chunks
@@ -137,9 +136,11 @@ A chunk can be in two states **free**, or **in-use**
 
 ##### Header Structure
 
+{{% section %}}
+
 #### Chunk :: In Use
 
-* Previous Size
+* <s>Previous Size</s>
 * Size
 * AMP*
 * **Payload**
@@ -175,6 +176,33 @@ Note: `malloc` returns the address of the payload
 
 ---
 
+![](Snipaste_2021-07-12_18-26-16.png)
+
+* Chunks are at LEAST `4 * sizeof(void*)`
+* Hmm mixing data and control 🤔
+
+<!-- Where does it say if the chunk is in use?  
+A: It doesn't  
+E: It relies on its reference -->
+
+<!-- Since chunks are byte-aligned to 8 bytes (0b1000)
+the last three bits for the size is never used 
+
+We use it for the AMP
+A - Is it in the main arena
+M - Was the chunk big enough to be allocated on the heap
+P - is the previous chunk in use -->
+
+<!-- ARENA - thread local data -->
+
+<!-- PREV_SIZE NOT USED WHEN ALLOCATED - also appears in previous colour
+
+IN USE CHUNKS ARE NOT TRACKED BY THE ARENA -->
+
+{{% /section %}}
+
+---
+
 ### free(chunk)
 
 {{% section %}}
@@ -201,7 +229,7 @@ Programs use several different types of 'bins' to efficiently store information 
 * There are 10 fastbins
 * Small chunks are stored in size-specific bins
     * 16, 24, 32, 40, 48, 56, 64, 72, 80, 88 bytes
-* Each fastbin is essentially a linked list
+* Each fastbin is essentially a <u>single</u> linked list
 * For each sized fastbin
     * Freed chunks added into to the <u>start</u> of the fastbin
     * Chunks are not combined with adjacent chunks
@@ -213,13 +241,17 @@ Programs use several different types of 'bins' to efficiently store information 
 ##### Unsorted Bins
 
 * For large chunks, when `free`'d, chunks are stored in a single bin of varying chunk sizes
-* Later sorted by malloc to be optimised 
+* Later sorted by malloc to be optimised
 
 &nbsp;  
 
 ##### Other Bins
 
 The normal bins are divided into 62 **small bins** (each bin has chunks of the same size), and two **large bins** (where each large bin has chunks of similar size)
+
+<!-- These chunks combine together
+
+![](https://media3.giphy.com/media/26gR2f01UTynjCPNS/giphy.gif) -->
 
 ---
 
@@ -229,8 +261,10 @@ The normal bins are divided into 62 **small bins** (each bin has chunks of the s
 
 Faster than a global cache!
 
-By default: limit of 7 chunks.  
+Arbitrarily sized bins that have a limit of 7 chunks (by default).  
 If 7 chunks have been free'd, tcache won't be used
+
+Note: `calloc` doesn't use the tcache
 
 {{% /section %}}
 
@@ -247,7 +281,7 @@ _malloc returns our own address!_
 ```c
                          // Bin: NULL
 free(chunk)              // Bin: chunk -> (HEAD = NULL)
-chunk.head = 0x41414141  // Bin: chunk -> 0x41414141 -> ???
+chunk = 0x41414141       // Bin: chunk -> 0x41414141 -> ???
 dummy = malloc(...)      // Bin: 0x41414141 -> ???
 pwn = malloc(...) ///////// pwn = 0x41414141
 ```
@@ -287,6 +321,18 @@ free(chunk);          // Bin: chunk -> (HEAD = NULL)
 free(chunk);          // Bin: chunk -> (HEAD = chunk) -> NULL
 puts(chunk.next) /////// chunk
 
+// $$$
+```
+
+or maybe
+
+```c
+                      // Bin: NULL
+free(chunk);          // Bin: chunk -> (HEAD = NULL)
+free(chunk);          // Bin: chunk -> (HEAD = chunk) -> NULL
+malloc(...)     // some val
+malloc(...)
+malloc(...)     // the same val!???
 // $$$
 ```
 
